@@ -3,9 +3,11 @@ const Display = ({ persons, deletePerson }) => {
 		<>
 			<ul>
 				{persons.map((person) => (
-					<li key={person.id}>
+					<li className="note" key={person.id}>
 						{person.name} : {person.number}
-						<button onClick={() => deletePerson(person.id)}>Delete</button>
+						<button className="delete-btn" onClick={() => deletePerson(person.id)}>
+							Delete
+						</button>
 					</li>
 				))}
 			</ul>
