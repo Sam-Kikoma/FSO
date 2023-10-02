@@ -1,68 +1,83 @@
-import { useState } from "react";
-import SearchFilter from "/components/SearchFilter.jsx";
-import Persons from "/components/Persons.jsx";
-import Details from "/components/Details.jsx";
+import "./App.css";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { useEffect } from "react";
+import Display from "/components/Display.jsx";
+import Form from "/components/Form.jsx";
+import Filter from "/components/Filter.jsx";
 
 const App = () => {
 	const [persons, setPersons] = useState([]);
 	const [newName, setNewName] = useState("");
 	const [newNumber, setNewNumber] = useState("");
-	const [nameFilter, setNameFilter] = useState("");
+	const [newSearch, setNewSearch] = useState("");
+	const [searchResults, setSearchResults] = useState([]);
 
-	useEffect(() => {
+	// useEffect to fetch data from the json server
+	const hook = () => {
 		axios.get("http://localhost:3001/persons").then((response) => {
 			setPersons(response.data);
 		});
-	}, []);
+	};
 
-	const updateName = (event) => {
+	useEffect(hook, []);
+
+	// Add name function
+	const addName = (event) => {
+		event.preventDefault();
+		const nameObject = {
+			name: newName,
+			number: newNumber,
+			// id: persons.length + 2,
+		};
+		// Post request
+		const pushName = () => {
+			axios.post("http://localhost:3001/persons", nameObject).then((response) => {
+				console.log(response);
+				setPersons(persons.concat(response.data));
+				setNewName("");
+				setNewNumber("");
+			});
+		};
+		persons.some((person) => person.name === nameObject.name) ? `${nameObject.name} already exists` : pushName();
+	};
+	// Delete function
+	const deletePerson = (id) => {
+		if (window.confirm("Are you sure you want to delete this entry")) {
+			axios.delete(`http://localhost:3001/persons/${id}`).then((response) => {
+				console.log(`ID:${id} has been deleted`);
+				// Update the persons state after deletion
+				setPersons(persons.filter((person) => person.id !== id));
+			});
+		}
+	};
+	const handleNameChange = (event) => {
 		setNewName(event.target.value);
 	};
 
-	const updateNumber = (event) => {
+	const handleNumChange = (event) => {
 		setNewNumber(event.target.value);
 	};
 
-	const updateSearchName = (event) => {
-		setNameFilter(event.target.value);
+	const handleSearchValue = (event) => {
+		setNewSearch(event.target.value);
+		// Search function
+		const results = persons.filter((person) => person.name.toLowerCase().includes(newSearch.toLowerCase()));
+		setSearchResults(results);
 	};
-
-	const addDetails = (event) => {
-		event.preventDefault();
-		const newPerson = { name: newName, phoneNumber: newNumber };
-		if (persons.some((person) => person.name === newName)) {
-			alert(`${newName} is already added to the phonebook`);
-		} else {
-			setPersons([...persons, newPerson]);
-			setNewNumber("");
-			setNewName("");
-		}
-	};
-
-	const searchResults = persons.filter((person) => person.name.toLowerCase().includes(nameFilter.toLowerCase()));
 
 	return (
 		<div>
 			<h2>Phonebook</h2>
-			<SearchFilter nameFilter={nameFilter} updateSearchName={updateSearchName} />
-			{nameFilter !== "" && (
-				<div>
-					<h2>Results</h2>
-					{searchResults.length > 0 ? <Details persons={searchResults} /> : <p>No results found.</p>}
-				</div>
-			)}
-			<hr />
-			<br />
-			<Persons
+			<Filter newSearch={newSearch} handleSearchValue={handleSearchValue} searchResults={searchResults} />
+			<Form
 				newName={newName}
+				handleNameChange={handleNameChange}
 				newNumber={newNumber}
-				updateName={updateName}
-				updateNumber={updateNumber}
-				addDetails={addDetails}
+				handleNumChange={handleNumChange}
+				addName={addName}
 			/>
-			<Details persons={persons} />
+			<h2>Numbers</h2>
+			<Display persons={persons} deletePerson={deletePerson} />
 		</div>
 	);
 };
