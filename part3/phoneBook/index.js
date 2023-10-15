@@ -28,6 +28,7 @@ let names = [
 		number: "12-34-567899",
 	},
 ];
+app.use(express.json());
 // Testing whether we're live
 app.get("/", (req, res) => {
 	res.send("<h1>It lives</h1>");
@@ -45,6 +46,43 @@ app.get("/api/persons/:id", (req, res) => {
 	} else {
 		res.status(404).end();
 	}
+});
+
+// ID generate
+const createID = () => {
+	// Random ID using math random
+	return Math.floor(Math.random() * 100);
+};
+// Post request
+app.post("/api/persons", (req, res) => {
+	const body = req.body;
+
+	if (!body.name || !body.number) {
+		return res.status(400).json({ error: "Name or number missing" });
+	}
+	// Check if the name already exists
+	const nameCheck = names.find((person) => person.name === body.name);
+
+	if (nameCheck) {
+		return res.status(400).json({ error: "Name must be a unique value" });
+	}
+
+	const newPerson = {
+		id: createID(),
+		name: body.name,
+		number: body.number,
+	};
+
+	names = names.concat(newPerson);
+
+	res.json(newPerson);
+});
+
+// Delete request
+app.delete("/api/persons/:id", (req, res) => {
+	const id = Number(req.params.id);
+	names = names.filter((name) => name.id !== id);
+	res.status(204).end;
 });
 // Date for info
 const date = new Date();
