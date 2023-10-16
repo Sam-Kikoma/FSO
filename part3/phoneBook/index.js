@@ -32,7 +32,7 @@ let names = [
 // Middleware
 app.use(express.json());
 
-// Loggin post requests
+// Logging post requests
 const postListen = (req, res, next) => {
 	if (req.method === "POST") {
 		morgan((tokens, req, res) => {
