@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const morgan = require("morgan");
 
 let names = [
 	{
@@ -28,7 +29,31 @@ let names = [
 		number: "12-34-567899",
 	},
 ];
+// Middleware
 app.use(express.json());
+
+// Loggin post requests
+const postListen = (req, res, next) => {
+	if (req.method === "POST") {
+		morgan((tokens, req, res) => {
+			return [
+				tokens.method(req, res),
+				tokens.url(req, res),
+				tokens.status(req, res),
+				tokens.res(req, res, "content-length"),
+				"-",
+				tokens["response-time"](req, res),
+				"ms",
+				JSON.stringify(req.body),
+			].join(" ");
+		})(req, res, next);
+	} else {
+		next();
+	}
+};
+
+// Apply the custom middleware
+app.use(postListen);
 // Testing whether we're live
 app.get("/", (req, res) => {
 	res.send("<h1>It lives</h1>");
