@@ -21,6 +21,8 @@ let notes = [
 ];
 // Cors
 app.use(cors());
+// Static
+app.use(express.static("dist"));
 
 app.get("/", (request, response) => {
 	response.send("<h1>Hello World</h1>");
