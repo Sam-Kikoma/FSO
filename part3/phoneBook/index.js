@@ -31,6 +31,8 @@ let names = [
 ];
 // Middleware
 app.use(express.json());
+//Serving static files from backend
+app.use(express.static("dist"));
 
 // Logging post requests
 const postListen = (req, res, next) => {
@@ -117,7 +119,7 @@ app.get("/info", (req, res) => {
 });
 
 // Port to listen to
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
 	console.log(`It lives : ${PORT} again`);
 });
