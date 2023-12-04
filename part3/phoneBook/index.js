@@ -1,5 +1,11 @@
 const express = require("express");
 const app = express();
+app.use(express.json());
+
+//Morgan middleware
+const morgan = require("morgan");
+morgan.token("req-body", (req) => JSON.stringify(req.body));
+app.use(morgan(":method :url :status :res[content-length] - :response-time ms :req-body"));
 
 let persons = [
 	{
@@ -45,6 +51,7 @@ app.get("/api/persons/:id", (request, response) => {
 app.delete("/api/persons/:id", (request, response) => {
 	const id = Number(request.params.id);
 	persons = persons.filter((person) => person.id !== id);
+	return response.status(204).end();
 });
 //Adding a resource
 const generateId = () => {
@@ -85,5 +92,6 @@ app.post("/api/persons", (request, response) => {
 
 // Port
 const PORT = 3001;
-app.listen(PORT);
-console.log(`${PORT} is live baby`);
+app.listen(PORT, () => {
+	console.log(`${PORT} is live baby`);
+});
