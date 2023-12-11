@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
+app.use(cors());
 app.use(express.json());
 
 let notes = [
@@ -63,6 +65,7 @@ app.post("/api/notes", (request, response) => {
 
 	response.json(note);
 });
+
 const PORT = 3001;
 app.listen(PORT);
 console.log(`Server is running ${PORT}`);
