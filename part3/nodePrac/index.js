@@ -3,6 +3,8 @@ const app = express();
 const cors = require("cors");
 app.use(cors());
 app.use(express.json());
+//Show static content
+app.use(express.static("dist"));
 
 let notes = [
 	{
@@ -19,6 +21,11 @@ let notes = [
 		id: 3,
 		content: "GET and POST are the most important methods of HTTP protocol",
 		important: true,
+	},
+	{
+		id: 4,
+		content: "End game",
+		important: "true",
 	},
 ];
 
@@ -66,6 +73,6 @@ app.post("/api/notes", (request, response) => {
 	response.json(note);
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT);
 console.log(`Server is running ${PORT}`);
