@@ -1,11 +1,15 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 app.use(express.json());
-
+//Serve static files from backend
+app.use(express.static("dist"));
 //Morgan middleware
 const morgan = require("morgan");
 morgan.token("req-body", (req) => JSON.stringify(req.body));
 app.use(morgan(":method :url :status :res[content-length] - :response-time ms :req-body"));
+
+app.use(cors());
 
 let persons = [
 	{
@@ -29,6 +33,11 @@ let persons = [
 		number: "39-23-6423122",
 	},
 ];
+
+//Root path
+app.get("/", (request, response) => {
+	response.send(`<h1>Phonebook Backend</p>`);
+});
 
 //Info route
 app.get("/info", (request, response) => {
@@ -91,7 +100,7 @@ app.post("/api/persons", (request, response) => {
 });
 
 // Port
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
 	console.log(`${PORT} is live baby`);
 });

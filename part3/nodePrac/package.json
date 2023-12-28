@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:ui": "if exist dist rmdir /S /Q dist && cd /c/Users/malon/Web/First-React-App/part2 && npm run build && xcopy /E /I /Y /c/Users/malon/Web/First-React-App/part2/dist /c/Users/malon/Web/FSO/part3/nodePrac",
+    "deploy": "fly deploy",
+    "deploy:full": "npm run build:ui && npm run deploy",    
+    "logs:prod": "fly logs"
   },
   "author": "",
   "license": "ISC",

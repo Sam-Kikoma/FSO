@@ -4,6 +4,7 @@ import axios from "axios";
 import Display from "/components/Display.jsx";
 import Form from "/components/Form.jsx";
 import Filter from "/components/Filter.jsx";
+const baseUrl = "/api/persons";
 
 const App = () => {
 	const [persons, setPersons] = useState([]);
@@ -14,7 +15,7 @@ const App = () => {
 
 	// useEffect to fetch data from the json server
 	const hook = () => {
-		axios.get("http://localhost:3001/persons").then((response) => {
+		axios.get(baseUrl).then((response) => {
 			setPersons(response.data);
 		});
 	};
@@ -31,7 +32,7 @@ const App = () => {
 		};
 		// Post request
 		const pushName = () => {
-			axios.post("http://localhost:3001/persons", nameObject).then((response) => {
+			axios.post(baseUrl, nameObject).then((response) => {
 				console.log(response);
 				setPersons(persons.concat(response.data));
 				setNewName("");
@@ -43,7 +44,7 @@ const App = () => {
 	// Delete function
 	const deletePerson = (id) => {
 		if (window.confirm("Are you sure you want to delete this entry")) {
-			axios.delete(`http://localhost:3001/persons/${id}`).then((response) => {
+			axios.delete(`${baseUrl}/${id}`).then((response) => {
 				console.log(`ID:${id} has been deleted`);
 				// Update the persons state after deletion
 				setPersons(persons.filter((person) => person.id !== id));
