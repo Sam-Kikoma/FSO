@@ -29,6 +29,7 @@ Note.find({}).then((result) => {
 	});
 	mongoose.connection.close();
 });
+
 //Saving a note
 // note.save().then((result) => {
 // 	console.log("Note saved");
