@@ -16,6 +16,7 @@ const App = () => {
 	// useEffect to fetch data from the json server
 	const hook = () => {
 		axios.get(baseUrl).then((response) => {
+			console.log(response.data);
 			setPersons(response.data);
 		});
 	};
@@ -27,7 +28,7 @@ const App = () => {
 		event.preventDefault();
 		const nameObject = {
 			name: newName,
-			number: newNumber,
+			phoneNumber: newNumber,
 			// id: persons.length + 2,
 		};
 		// Post request

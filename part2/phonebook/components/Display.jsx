@@ -4,7 +4,7 @@ const Display = ({ persons, deletePerson }) => {
 			<ul>
 				{persons.map((person) => (
 					<li className="note" key={person.id}>
-						{person.name} : {person.number}
+						{person.name} : {person.phoneNumber}
 						<button className="delete-btn" onClick={() => deletePerson(person.id)}>
 							Delete
 						</button>
