@@ -22,7 +22,7 @@ const errorHandler = (error, request, response, next) => {
 
 //Root path
 app.get("/", (request, response) => {
-	response.send(`<h1>Phonebook Backend</p>`);
+	response.send("<h1>Phonebook Backend</p>");
 });
 
 //Info route

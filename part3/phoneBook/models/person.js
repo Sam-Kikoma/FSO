@@ -13,8 +13,22 @@ mongoose
 	});
 
 const phoneBookSchema = new mongoose.Schema({
-	name: String,
-	phoneNumber: String,
+	name: {
+		type: String,
+		minLength: 3,
+		required: true,
+	},
+	phoneNumber: {
+		type: String,
+		minLength: 8,
+		validate: {
+			validator: function (value) {
+				const regex = /^.{2,3}(.+)$/;
+				return regex.test(value);
+			},
+			message: "Invalid format",
+		},
+	},
 });
 
 phoneBookSchema.set("toJSON", {
