@@ -1,7 +1,7 @@
 // Network bit
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-const mongoUrl = process.env.MONGODB_URI;
+
 mongoose
 	.connect(mongoUrl)
 
