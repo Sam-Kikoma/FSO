@@ -6,11 +6,13 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build:ui": "if exist dist rmdir /S /Q dist && cd /c/Users/malon/Web/First-React-App/part2 && npm run build && xcopy /E /I /Y /c/Users/malon/Web/First-React-App/part2/dist /c/Users/malon/Web/FSO/part3/nodePrac",
     "deploy": "fly deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
-    "logs:prod": "fly logs"
+    "logs:prod": "fly logs",
+    "test": "jest --verbose",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix --ext .js,.jsx ."
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +24,12 @@
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.5.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2",
+    "jest": "^29.7.0",
     "nodemon": "^3.0.1"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
