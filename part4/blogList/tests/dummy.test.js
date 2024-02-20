@@ -1,11 +1,13 @@
+const { test, describe } = require("node:test");
+const assert = require("node:assert");
 const listHelper = require("../utils/list_helper");
-
+//Sample data
 const listWithOneBlog = [
 	{
 		_id: "5a422aa71b54a676234d17f8",
 		title: "Go To Statement Considered Harmful",
 		author: "Edsger W. Dijkstra",
-		url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+		url: "https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf",
 		likes: 5,
 		__v: 0,
 	},
@@ -60,30 +62,27 @@ const blogs = [
 		__v: 0,
 	},
 ];
-// Dummy test
-test("dummy returns one", () => {
+
+test("Dummy = 1", () => {
 	const blogs = [];
-
 	const result = listHelper.dummy(blogs);
-	expect(result).toBe(1);
+	assert.strictEqual(result, 1);
 });
-//Total likes
-describe("total likes", () => {
-	test("when list has only one blog, equals the likes of that", () => {
+
+describe("Total likes", () => {
+	test("List with one blog", () => {
 		const result = listHelper.totalLikes(listWithOneBlog);
-		expect(result).toBe(5);
+		assert.strictEqual(result, 5);
 	});
-
-	test("Number of likes", () => {
+	test("List with many blogs", () => {
 		const result = listHelper.totalLikes(blogs);
-		expect(result).toBe(36);
+		assert.strictEqual(result, 36);
 	});
 });
-//Max likes
 
-describe("Blog with most likes", () => {
-	test("Max likes", () => {
-		const result = listHelper.favoriteBlog(blogs);
-		expect(result).toEqual(blogs[2]);
+describe("Favourite blog", () => {
+	test("Blog with most likes", () => {
+		const result = listHelper.favouriteBlog(blogs);
+		assert.deepStrictEqual(result, blogs[2]);
 	});
 });
