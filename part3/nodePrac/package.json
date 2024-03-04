@@ -4,13 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
     "build:ui": "if exist dist rmdir /S /Q dist && cd /c/Users/malon/Web/First-React-App/part2 && npm run build && xcopy /E /I /Y /c/Users/malon/Web/First-React-App/part2/dist /c/Users/malon/Web/FSO/part3/nodePrac",
     "deploy": "fly deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
     "logs:prod": "fly logs",
-    "test": "node --test",
+    "test": "cross-env NODE_ENV=test node --test",
     "lint": "eslint .",
     "lint:fix": "eslint --fix --ext .js,.jsx ."
   },
@@ -24,8 +24,9 @@
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.5.0",
-    "eslint": "^8.56.0",
+    "cross-env": "^7.0.3",
     "eslint-plugin-react": "^7.33.2",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.1.0",
+    "supertest": "^6.3.4"
   }
 }
